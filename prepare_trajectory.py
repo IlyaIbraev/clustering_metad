@@ -11,7 +11,7 @@ def prepare_trajectory(topology: str, trajectory: str, weights: str, weights_fie
 
     EPS = 1e-5
 
-    while left - EPS < right:
+    while left + EPS < right:
         mid = (left + right) / 2
         if weights_data[weights_data[weights_field] > mid].shape[0] >= num_frames:
             left = mid
