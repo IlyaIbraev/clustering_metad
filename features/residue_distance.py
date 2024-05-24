@@ -50,7 +50,7 @@ def prepare_matrix(topology_filename: str, trajectory_filename: str) -> None:
             values_to_output.append(f"dist_{a}_{b}.lowest")
 
     write_arr.append(
-        f"PRINT ARG={','.join(values_to_output)} FILE=CONTACTMAP_COLVAR STRIDE=1"
+        f"PRINT ARG={','.join(values_to_output)} FILE=calculations/residue_distance/CONTACTMAP_COLVAR STRIDE=1"
     )
 
     with open(plumed_filename, "w") as file:
@@ -62,10 +62,10 @@ def prepare_matrix(topology_filename: str, trajectory_filename: str) -> None:
     )
 
     # prepare precalculated distance rmsd matrix
-    distances = read_colvar("CONTACTMAP_COLVAR")
+    distances = read_colvar("calculations/residue_distance/CONTACTMAP_COLVAR")
     del distances["time"]
 
     rmsd = scipy.spatial.distance.cdist(
         distances, distances).astype(np.float32)
 
-    rmsd.tofile("rmsd.dat")
+    rmsd.tofile("calculations/residue_distance/rmsd.dat")
