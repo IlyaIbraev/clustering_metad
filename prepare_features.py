@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, List
 
 from tsne_clustering import TSNEKMeans
 from tsne_manager import TSNEManager
@@ -14,10 +14,14 @@ class Feature:
 
 class FeaturesManager:
 
-    features: list[Feature] = []
+    features: List[Feature] = []
 
-    def __init__(self, num_proc: int, manager: TSNEManager) -> None:
-        self.num_proc = num_proc
+    def __init__(
+        self,
+        # num_proc: int,
+        manager: TSNEManager
+    ) -> None:
+        # self.num_proc = num_proc
         self.manager = manager
 
     def add_feature(self, feature: Feature) -> None:
@@ -32,7 +36,7 @@ class FeaturesManager:
         for feature in self.features:
             tsne_kmeans = TSNEKMeans(
                 feature.name,
-                self.num_proc,
+                # self.num_proc,
                 self.manager
             )
             tsne_kmeans.proceed_clustering()
