@@ -19,7 +19,6 @@
 - `-weights` Path to weights file `[PLUMED-compatible]`
 - `-weights_field` Name of the variable responsible for the weights in weights
 - `-num_frames` Number of frames for clustering
-- `-num_proc` The maximum number of processes in which calculations can be run. Enter `0` to use all available.
 - `-lj` Path to Lennard-Jones energies file `[GROMACS-compatible]`
 
 ## How to add your own features?
