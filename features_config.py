@@ -8,7 +8,7 @@ from features.heavy_atoms import prepare_matrix as heavy_atoms_prepare_matrix
 
 
 def get_manager(
-    num_proc: int,
+    #     num_proc: int,
     manager: TSNEManager,
     topology_filename: str,
     trajectory_filename: str,
@@ -17,7 +17,7 @@ def get_manager(
 ) -> FeaturesManager:
 
     features_manager = FeaturesManager(
-        num_proc=num_proc,
+        # num_proc=num_proc,
         manager=manager
     )
 
