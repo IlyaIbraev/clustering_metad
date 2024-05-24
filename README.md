@@ -9,7 +9,7 @@
 ## Supported features for t-SNE - KMean clustering:
 
 - Distance between amino acids
-- RMSD on heavy atoms
+- Coordinates of heavy atoms
 - Lennard-Jones interaction energy
 
 ## Program input parameters:
