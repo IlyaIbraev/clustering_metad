@@ -13,7 +13,7 @@ def prepare_matrix(lj_filename: str, frames_filename: str) -> None:
         frames_filename, "r"
     ) as file:
         lines = file.readlines()
-    for line in lines:
+    for line in lines[1:]:
         frames_in_line = map(int, line.split())
         for frame in frames_in_line:
             frames.add(frame)
