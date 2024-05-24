@@ -17,3 +17,11 @@ def prepare_feature_calc_directory(method_name: str) -> None:
         os.mkdir(
             f"calculations/{method_name}"
         )
+    if "transformed" not in os.listdir(f"calculations/{method_name}"):
+        os.mkdir(
+            f"calculations/{method_name}/transformed"
+        )
+    if "clusters" not in os.listdir(f"calculations/{method_name}"):
+        os.mkdir(
+            f"calculations/{method_name}/clusters"
+        )
