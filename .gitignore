@@ -1,0 +1,7 @@
+__pycache__
+.mypy_cache
+.venv
+calculations*
+nohup.out
+visualization.ipynb
+tsne_log*.csv
