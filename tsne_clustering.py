@@ -1,4 +1,5 @@
-from multiprocessing import Pool
+# from multiprocessing import Pool
+import os
 import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.manifold import TSNE
@@ -11,28 +12,35 @@ from tsne_manager import TSNEManager
 
 class TSNEKMeans:
 
-    perplexity_values = range(100, 1100, 100)
+    perplexity_values = [
+        100, 200, 300, 400, 500, 600, 700, 800, 900, 1000
+    ]
     clusters_values = [
         2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 30, 40, 50, 60, 70, 80, 90, 100
     ]
 
-    def __init__(self, features_filename: str, num_proc: int, manager: TSNEManager) -> None:
+    def __init__(
+            self,
+            features_filename: str,
+            # num_proc: int,
+            manager: TSNEManager
+    ) -> None:
         self.features_filename = features_filename
-        self.num_proc = num_proc
+        # self.num_proc = num_proc
         self.manager = manager
 
     def _read_rmsd_matrix(self) -> None:
-        data = np.fromfile(self.features_filename, dtype=np.float32)
+        data = np.fromfile(
+            "calculations/"+self.features_filename+"/rmsd.dat",
+            dtype=np.float32)
         self.rmsd = data.reshape(
             int(np.sqrt(len(data))), int(np.sqrt(len(data)))
         )
 
     def _check_symmetry(self) -> None:
-        assert suv.check_symmetric(
-            self.rmsd, raise_exception=True), "Matrix is not symmetric"
+        suv.check_symmetric(self.rmsd, raise_exception=True)
 
     def _calculate_tsne(self, perplexity: int) -> None:
-
         tsne_model = TSNE(
             n_components=2,
             perplexity=perplexity,
@@ -50,19 +58,18 @@ class TSNEKMeans:
         tsne_transformed = tsne_model.fit_transform(self.rmsd)
 
         np.savetxt(
-            f"calculations/{self.features_filename}/transformed/{perplexity}",
+            f"calculations/{self.features_filename}/transformed/{perplexity}.dat",
             tsne_transformed
         )
 
     def _proceed_calculations(self) -> None:
 
-        with Pool(self.num_proc) as pool:
-            pool.map(self._calculate_tsne, self.perplexity_values)
+        for perplexity_value in self.perplexity_values:
+            self._calculate_tsne(perplexity_value)
 
     def _proceed_kmeans(self) -> None:
 
         for perplexity in self.perplexity_values:
-            # fix later
             tsne_transformed = np.loadtxt(
                 f"calculations/{self.features_filename}/transformed/{perplexity}.dat"
             )
@@ -73,6 +80,12 @@ class TSNEKMeans:
                 )
                 kmeans_model.fit(tsne_transformed)
                 cluster_labels = kmeans_model.labels_
+                if f"{perplexity}" not in os.listdir(
+                    f"calculations/{self.features_filename}/clusters/"
+                ):
+                    os.mkdir(
+                        f"calculations/{self.features_filename}/clusters/{perplexity}"
+                    )
                 np.savetxt(
                     f"calculations/{self.features_filename}/clusters/{perplexity}/{n_clusters}.dat",
                     cluster_labels
