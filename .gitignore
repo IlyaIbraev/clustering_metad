@@ -3,5 +3,4 @@ __pycache__
 .venv
 calculations*
 nohup.out
-visualization.ipynb
 tsne_log*.csv
