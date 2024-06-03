@@ -3,9 +3,7 @@ import os
 
 def create_directory(directory: str, path: str) -> None:
     if directory not in os.listdir(path):
-        os.mkdir(
-            os.path.join(path, directory)
-        )
+        os.mkdir(os.path.join(path, directory))
 
 
 def prepare_main_calc_directory() -> None:

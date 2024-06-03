@@ -1,10 +1,8 @@
-
+from features.heavy_atoms import prepare_matrix as heavy_atoms_prepare_matrix
+from features.lennard_jones import prepare_matrix as lennard_jones_prepare_matrix
+from features.residue_distance import prepare_matrix as residue_distance_prepare_matrix
 from prepare_features import Feature, FeaturesManager
 from tsne_manager import TSNEManager
-
-from features.residue_distance import prepare_matrix as residue_distance_prepare_matrix
-from features.lennard_jones import prepare_matrix as lennard_jones_prepare_matrix
-from features.heavy_atoms import prepare_matrix as heavy_atoms_prepare_matrix
 
 
 def get_manager(
@@ -13,7 +11,7 @@ def get_manager(
     topology_filename: str,
     trajectory_filename: str,
     lj_filename: str,
-    frames_filename: str
+    frames_filename: str,
 ) -> FeaturesManager:
 
     features_manager = FeaturesManager(
@@ -28,7 +26,7 @@ def get_manager(
             params={
                 "topology_filename": topology_filename,
                 "trajectory_filename": trajectory_filename,
-            }
+            },
         )
     )
 
@@ -37,10 +35,7 @@ def get_manager(
             Feature(
                 name="lennard_jones",
                 prepare_function=lennard_jones_prepare_matrix,
-                params={
-                    "lj_filename": lj_filename,
-                    "frames_filename": frames_filename
-                }
+                params={"lj_filename": lj_filename, "frames_filename": frames_filename},
             )
         )
 
@@ -51,7 +46,7 @@ def get_manager(
             params={
                 "topology_filename": topology_filename,
                 "trajectory_filename": trajectory_filename,
-            }
+            },
         )
     )
 

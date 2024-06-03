@@ -1,4 +1,5 @@
 import os
+
 import numpy as np
 from gromacs.fileformats.xpm import XPM
 
@@ -12,8 +13,6 @@ def prepare_matrix(topology_filename: str, trajectory_filename: str) -> None:
         "EOF\n"
     )
 
-    rmsd_matrix = XPM(
-        "calculations/trajectory/rmsd.xpm"
-    ).array.astype(np.float32)
+    rmsd_matrix = XPM("calculations/trajectory/rmsd.xpm").array.astype(np.float32)
 
     rmsd_matrix.tofile("calculations/heavy_atoms/rmsd.dat")

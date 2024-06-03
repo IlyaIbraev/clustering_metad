@@ -1,8 +1,8 @@
 import os
+
+import mdtraj as md
 import numpy as np
 import scipy
-import mdtraj as md
-
 
 from utils import read_colvar
 
@@ -13,21 +13,15 @@ def prepare_matrix(topology_filename: str, trajectory_filename: str) -> None:
 
     protein = md.load(topology_filename)
     for resid in range(protein.n_residues):
-        heavy_atoms_per_res[resid] = protein.top.select(
-            f"resid {resid} and mass >= 12"
-        )
+        heavy_atoms_per_res[resid] = protein.top.select(f"resid {resid} and mass >= 12")
 
     n_atoms_in_protein = protein.n_atoms
     plumed_filename = "calculations/residue_distance/plumed_contactmap.dat"
 
     write_arr = []
 
-    write_arr.append(
-        f"MOLINFO STRUCTURE={topology_filename}"
-    )
-    write_arr.append(
-        f"WHOLEMOLECULES ENTITY0=1-{n_atoms_in_protein}"
-    )
+    write_arr.append(f"MOLINFO STRUCTURE={topology_filename}")
+    write_arr.append(f"WHOLEMOLECULES ENTITY0=1-{n_atoms_in_protein}")
 
     write_arr.append("")
 
@@ -41,7 +35,7 @@ def prepare_matrix(topology_filename: str, trajectory_filename: str) -> None:
     values_to_output = []
 
     for a in range(0, protein.n_residues):
-        for b in range(a+1, protein.n_residues):
+        for b in range(a + 1, protein.n_residues):
 
             write_arr.append(
                 f"dist_{a}_{b}: DISTANCES GROUPA=residue_{a} GROUPB=residue_{b} LOWEST NOPBC"
@@ -65,7 +59,6 @@ def prepare_matrix(topology_filename: str, trajectory_filename: str) -> None:
     distances = read_colvar("calculations/residue_distance/CONTACTMAP_COLVAR")
     del distances["time"]
 
-    rmsd = scipy.spatial.distance.cdist(
-        distances, distances).astype(np.float32)
+    rmsd = scipy.spatial.distance.cdist(distances, distances).astype(np.float32)
 
     rmsd.tofile("calculations/residue_distance/rmsd.dat")

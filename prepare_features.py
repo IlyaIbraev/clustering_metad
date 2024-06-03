@@ -1,8 +1,8 @@
 from typing import Callable, List
 
+from prepare_filestructure import prepare_feature_calc_directory
 from tsne_clustering import TSNEKMeans
 from tsne_manager import TSNEManager
-from prepare_filestructure import prepare_feature_calc_directory
 
 
 class Feature:
@@ -19,7 +19,7 @@ class FeaturesManager:
     def __init__(
         self,
         # num_proc: int,
-        manager: TSNEManager
+        manager: TSNEManager,
     ) -> None:
         # self.num_proc = num_proc
         self.manager = manager
@@ -37,6 +37,6 @@ class FeaturesManager:
             tsne_kmeans = TSNEKMeans(
                 feature.name,
                 # self.num_proc,
-                self.manager
+                self.manager,
             )
             tsne_kmeans.proceed_clustering()

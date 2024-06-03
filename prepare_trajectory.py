@@ -1,8 +1,11 @@
 import os
+
 from utils import read_colvar
 
 
-def prepare_trajectory(topology: str, trajectory: str, weights: str, weights_field: str, num_frames: int):
+def prepare_trajectory(
+    topology: str, trajectory: str, weights: str, weights_field: str, num_frames: int
+):
 
     weights_data = read_colvar(weights)
 
@@ -22,7 +25,9 @@ def prepare_trajectory(topology: str, trajectory: str, weights: str, weights_fie
 
     with open("calculations/trajectory/frames.ndx", "w") as f:
         f.write("[ frames ]\n")
-        for i, frame in enumerate(weights_data[weights_data[weights_field] > mid].index):
+        for i, frame in enumerate(
+            weights_data[weights_data[weights_field] > mid].index
+        ):
             if i % 100 == 0:
                 f.write(f"\n")
             f.write(f"{frame} ")
